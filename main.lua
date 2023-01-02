@@ -22,7 +22,7 @@ end
 
 local outlineOpacity = 0.85
 
-function draw(dt)
+function tick(dt)
     -- Outline the escape vehicle
     if enableEscapeOutline then
         DrawBodyOutline(FindBody("escapevehicle", true), 117 / 255, 255 / 255, 123 / 255, outlineOpacity)
@@ -35,7 +35,6 @@ function draw(dt)
 end
 
 function DrawObjectiveOutline(objective)
-
     if HasTag(objective, "optional") then
         -- Outline optional objectives
         if enableOptionalOutline then
