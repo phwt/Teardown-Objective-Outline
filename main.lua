@@ -14,15 +14,15 @@ function init()
     if (not HasKey(EscapeOutlineKey)) then
         SetBool(EscapeOutlineKey, true)
     end
-
-    enableRequiredOutline = GetBool(ReqiuredOutlineKey)
-    enableOptionalOutline = GetBool(OptionalOutlineKey)
-    enableEscapeOutline = GetBool(EscapeOutlineKey)
 end
 
 local outlineOpacity = 0.85
 
 function tick(dt)
+    enableRequiredOutline = GetBool(ReqiuredOutlineKey)
+    enableOptionalOutline = GetBool(OptionalOutlineKey)
+    enableEscapeOutline = GetBool(EscapeOutlineKey)
+
     -- Outline the escape vehicle
     if enableEscapeOutline then
         DrawBodyOutline(FindBody("escapevehicle", true), 117 / 255, 255 / 255, 123 / 255, outlineOpacity)
