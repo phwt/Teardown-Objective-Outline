@@ -1,4 +1,4 @@
 name = Objective Outline - Anytime, Anywhere
 author = TacticalBacon_
-description = Objectives outline will always be visible regardless of the distance and also will be color coded!
+description = Objectives outline will always be visible regardless of the distance and also will be color coded! [noupload]
 tags = Gameplay
