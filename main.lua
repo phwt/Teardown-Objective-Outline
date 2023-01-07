@@ -28,9 +28,17 @@ function tick(dt)
         DrawBodyOutline(FindBody("escapevehicle", true), 117 / 255, 255 / 255, 123 / 255, outlineOpacity)
     end
 
-    local objectives = FindBodies("target", true)
-    for _, objective in ipairs(objectives) do
-        DrawObjectiveOutline(objective)
+    OutlineBodies(FindBodies("target", true), DrawObjectiveOutline)
+    
+    OutlineBodies(FindBodies("head", true), DrawRobotOutline)
+    OutlineBodies(FindBodies("body", true), DrawRobotOutline)
+    OutlineBodies(FindBodies("leg", true), DrawRobotOutline)
+    OutlineBodies(FindBodies("foot", true), DrawRobotOutline)
+end
+
+function OutlineBodies(bodies, outlineFunction)
+    for _, body in ipairs(bodies) do
+        outlineFunction(body)
     end
 end
 
@@ -46,4 +54,8 @@ function DrawObjectiveOutline(objective)
             DrawBodyOutline(objective, 252 / 255, 250 / 255, 137 / 255, outlineOpacity)
         end
     end
+end
+
+function DrawRobotOutline(robot)
+    DrawBodyOutline(robot, 255 / 255, 107 / 255, 77 / 255, outlineOpacity)
 end
