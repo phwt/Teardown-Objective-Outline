@@ -3,6 +3,7 @@
 local enableRequiredOutline
 local enableOptionalOutline
 local enableEscapeOutline
+local enableRobotOutline
 
 function init()
     if (not HasKey(ReqiuredOutlineKey)) then
@@ -14,10 +15,14 @@ function init()
     if (not HasKey(EscapeOutlineKey)) then
         SetBool(EscapeOutlineKey, true)
     end
+    if (not HasKey(RobotOutlineKey)) then
+        SetBool(RobotOutlineKey, true)
+    end
 
     enableRequiredOutline = GetBool(ReqiuredOutlineKey)
     enableOptionalOutline = GetBool(OptionalOutlineKey)
     enableEscapeOutline = GetBool(EscapeOutlineKey)
+    enableRobotOutline = GetBool(RobotOutlineKey)
 end
 
 function draw()
@@ -31,9 +36,10 @@ function draw()
     UiTranslate(0, 150)
     UiFont("regular.ttf", 32)
 
-    enableRequiredOutline = UiBoolOption("Outline Required Objective", ReqiuredOutlineKey, enableRequiredOutline)
-    enableOptionalOutline = UiBoolOption("Outline Optional Objective", OptionalOutlineKey, enableOptionalOutline)
+    enableRequiredOutline = UiBoolOption("Outline Required Objectives", ReqiuredOutlineKey, enableRequiredOutline)
+    enableOptionalOutline = UiBoolOption("Outline Optional Objectives", OptionalOutlineKey, enableOptionalOutline)
     enableEscapeOutline = UiBoolOption("Outline Escape Vehicle", EscapeOutlineKey, enableEscapeOutline)
+    enableRobotOutline = UiBoolOption("Outline Robots", RobotOutlineKey, enableRobotOutline)
 end
 
 function UiBoolOption(text, key, initialValue)

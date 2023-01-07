@@ -14,6 +14,9 @@ function init()
     if (not HasKey(EscapeOutlineKey)) then
         SetBool(EscapeOutlineKey, true)
     end
+    if (not HasKey(RobotOutlineKey)) then
+        SetBool(RobotOutlineKey, true)
+    end
 end
 
 local outlineOpacity = 0.85
@@ -22,6 +25,7 @@ function tick(dt)
     enableRequiredOutline = GetBool(ReqiuredOutlineKey)
     enableOptionalOutline = GetBool(OptionalOutlineKey)
     enableEscapeOutline = GetBool(EscapeOutlineKey)
+    enableRobotOutline = GetBool(RobotOutlineKey)
 
     -- Outline the escape vehicle
     if enableEscapeOutline then
@@ -29,11 +33,13 @@ function tick(dt)
     end
 
     OutlineBodies(FindBodies("target", true), DrawObjectiveOutline)
-    
-    OutlineBodies(FindBodies("head", true), DrawRobotOutline)
-    OutlineBodies(FindBodies("body", true), DrawRobotOutline)
-    OutlineBodies(FindBodies("leg", true), DrawRobotOutline)
-    OutlineBodies(FindBodies("foot", true), DrawRobotOutline)
+
+    if enableRobotOutline then
+        OutlineBodies(FindBodies("head", true), DrawRobotOutline)
+        OutlineBodies(FindBodies("body", true), DrawRobotOutline)
+        OutlineBodies(FindBodies("leg", true), DrawRobotOutline)
+        OutlineBodies(FindBodies("foot", true), DrawRobotOutline)
+    end
 end
 
 function OutlineBodies(bodies, outlineFunction)
