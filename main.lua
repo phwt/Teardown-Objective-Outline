@@ -25,7 +25,7 @@ function draw(dt)
 
     local requiredObjectives = {}
     local optionalObjectives = {}
-    local allRobotParts = {}
+    local robotParts = {}
 
     if enableEscapeOutline then
         DrawBodyOutline(FindBody("escapevehicle", true), 117 / 255, 255 / 255, 123 / 255, opacity) -- Escape Vehicle (Green)
@@ -52,31 +52,13 @@ function draw(dt)
 
     if enableRobotOutline then
         for _, leg in ipairs(FindBodies("leg", true)) do
-            local parts = GetJointedBodies(leg)
-            local isRobotValid = true
-
-            if enableOptionalOutline or enableRequiredOutline then
-                if IsRobotTarget(parts) then
-                    isRobotValid = false
-                end
-            end
-
-            if isRobotValid then
-                MergeTables(allRobotParts, parts)
-            end
+            MergeTables(robotParts, GetJointedBodies(leg))
         end
     end
 
+    OutlineBodies(robotParts, function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, opacity) end) -- Robots (Red)
     OutlineBodies(optionalObjectives, function(part) DrawBodyOutline(part, 1, 1, 1, opacity) end) -- Optional Objectives (White)
     OutlineBodies(requiredObjectives, function(part) DrawBodyOutline(part, 252 / 255, 250 / 255, 137 / 255, opacity) end) -- Required Objectives (Yellow)
-    OutlineBodies(allRobotParts, function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, opacity) end) -- Robots (Red)
-end
-
-function IsRobotTarget(robotParts)
-    for _, part in ipairs(robotParts) do
-        if HasTag(part, "target") then return true end
-    end
-    return false
 end
 
 function OutlineBodies(bodies, outlineFunction)
