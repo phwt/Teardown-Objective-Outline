@@ -57,11 +57,27 @@ function draw(dt)
 
     if enableRobotOutline then
         for _, leg in ipairs(FindBodies("leg", true)) do
-            for _, part in ipairs(GetJointedBodies(leg)) do
-                table.insert(robotParts, part)
+            local parts = GetJointedBodies(leg)
+            local isRobotValid = true
+
+            if enableOptionalOutline or enableRequiredOutline then
+                if IsRobotTarget(parts) then
+                    isRobotValid = false
+                end
+            end
+
+            if isRobotValid then
+                MergeTables(robotParts, parts)
             end
         end
     end
+end
+
+function IsRobotTarget(localRobotParts)
+    for _, part in ipairs(localRobotParts) do
+        if HasTag(part, "target") then return true end
+    end
+    return false
 end
 
 function tick(dt)
