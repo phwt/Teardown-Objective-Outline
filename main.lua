@@ -1,10 +1,5 @@
 #include "key.lua"
 
-local enableRequiredOutline
-local enableOptionalOutline
-local enableEscapeOutline
-local enableRobotOutline
-
 function init()
     if (not HasKey(ReqiuredOutlineKey)) then
         SetBool(ReqiuredOutlineKey, true)
@@ -21,16 +16,16 @@ function init()
 end
 
 local opacity = 0.85
-local requiredObjectives = {}
-local optionalObjectives = {}
-local robotParts = {}
 
 function draw(dt)
-    enableRequiredOutline = GetBool(ReqiuredOutlineKey)
-    enableOptionalOutline = GetBool(OptionalOutlineKey)
-    enableEscapeOutline = GetBool(EscapeOutlineKey)
-    enableRobotOutline = GetBool(RobotOutlineKey)
+    local enableRequiredOutline = GetBool(ReqiuredOutlineKey)
+    local enableOptionalOutline = GetBool(OptionalOutlineKey)
+    local enableEscapeOutline = GetBool(EscapeOutlineKey)
+    local enableRobotOutline = GetBool(RobotOutlineKey)
 
+    local requiredObjectives = {}
+    local optionalObjectives = {}
+    local allRobotParts = {}
 
     if enableEscapeOutline then
         DrawBodyOutline(FindBody("escapevehicle", true), 117 / 255, 255 / 255, 123 / 255, opacity) -- Escape Vehicle (Green)
@@ -67,18 +62,18 @@ function draw(dt)
             end
 
             if isRobotValid then
-                MergeTables(robotParts, parts)
+                MergeTables(allRobotParts, parts)
             end
         end
     end
 
     OutlineBodies(optionalObjectives, function(part) DrawBodyOutline(part, 1, 1, 1, opacity) end) -- Optional Objectives (White)
     OutlineBodies(requiredObjectives, function(part) DrawBodyOutline(part, 252 / 255, 250 / 255, 137 / 255, opacity) end) -- Required Objectives (Yellow)
-    OutlineBodies(robotParts, function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, opacity) end) -- Robots (Red)
+    OutlineBodies(allRobotParts, function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, opacity) end) -- Robots (Red)
 end
 
-function IsRobotTarget(localRobotParts)
-    for _, part in ipairs(localRobotParts) do
+function IsRobotTarget(robotParts)
+    for _, part in ipairs(robotParts) do
         if HasTag(part, "target") then return true end
     end
     return false
