@@ -20,7 +20,7 @@ function init()
     end
 end
 
-local outlineOpacity = 0.85
+local opacity = 0.85
 local escapeVehicle
 local requiredObjectives = {}
 local optionalObjectives = {}
@@ -32,52 +32,43 @@ function draw(dt)
     enableEscapeOutline = GetBool(EscapeOutlineKey)
     enableRobotOutline = GetBool(RobotOutlineKey)
 
-    escapeVehicle = FindBody("escapevehicle", true)
+    if enableEscapeOutline then
+        escapeVehicle = FindBody("escapevehicle", true)
+    end
 
     for _, target in ipairs(FindBodies("target", true)) do
+        local parts = { target }
+
         local isOptional = HasTag(target, "optional")
         local isRobot = HasTag(target, "body")
-
-        local parts = { target }
 
         if isRobot then
             MergeTables(parts, GetJointedBodies(target))
         end
 
-        if isOptional then
+        if isOptional and enableOptionalOutline then
             MergeTables(optionalObjectives, parts)
-        else
+        end
+
+        if not isOptional and enableRequiredOutline then
             MergeTables(requiredObjectives, parts)
         end
     end
 
-    for _, leg in ipairs(FindBodies("leg", true)) do
-        for _, part in ipairs(GetJointedBodies(leg)) do
-            table.insert(robotParts, part)
+    if enableRobotOutline then
+        for _, leg in ipairs(FindBodies("leg", true)) do
+            for _, part in ipairs(GetJointedBodies(leg)) do
+                table.insert(robotParts, part)
+            end
         end
     end
 end
 
 function tick(dt)
-    -- Outline the escape vehicle
-    if enableEscapeOutline then
-        DrawBodyOutline(escapeVehicle, 117 / 255, 255 / 255, 123 / 255, outlineOpacity)
-    end
-
-    if enableOptionalOutline then
-        OutlineBodies(optionalObjectives,
-            function(part) DrawBodyOutline(part, 1, 1, 1, outlineOpacity) end)
-    end
-
-    if enableRequiredOutline then
-        OutlineBodies(requiredObjectives,
-            function(part) DrawBodyOutline(part, 252 / 255, 250 / 255, 137 / 255, outlineOpacity) end)
-    end
-
-    if enableRobotOutline then
-        OutlineBodies(robotParts,
-            function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, outlineOpacity) end)
-    end
+    DrawBodyOutline(escapeVehicle, 117 / 255, 255 / 255, 123 / 255, opacity) -- Escape Vehicle (Green)
+    OutlineBodies(optionalObjectives, function(part) DrawBodyOutline(part, 1, 1, 1, opacity) end) -- Optional Objectives (White)
+    OutlineBodies(requiredObjectives, function(part) DrawBodyOutline(part, 252 / 255, 250 / 255, 137 / 255, opacity) end) -- Required Objectives (Yellow)
+    OutlineBodies(robotParts, function(part) DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, opacity) end) -- Robots (Red)
 end
 
 function OutlineBodies(bodies, outlineFunction)
