@@ -3,6 +3,7 @@
 local enableRequiredOutline
 local enableOptionalOutline
 local enableEscapeOutline
+local enableRobotOutline
 
 function init()
     if (not HasKey(ReqiuredOutlineKey)) then
@@ -35,10 +36,7 @@ function tick(dt)
     OutlineBodies(FindBodies("target", true), DrawObjectiveOutline)
 
     if enableRobotOutline then
-        OutlineBodies(FindBodies("head", true), DrawRobotOutline)
-        OutlineBodies(FindBodies("body", true), DrawRobotOutline)
         OutlineBodies(FindBodies("leg", true), DrawRobotOutline)
-        OutlineBodies(FindBodies("foot", true), DrawRobotOutline)
     end
 end
 
@@ -63,5 +61,10 @@ function DrawObjectiveOutline(objective)
 end
 
 function DrawRobotOutline(robot)
-    DrawBodyOutline(robot, 255 / 255, 107 / 255, 77 / 255, outlineOpacity)
+    local function drawRequiredOutline(part)
+        DrawBodyOutline(part, 255 / 255, 107 / 255, 77 / 255, outlineOpacity)
+    end
+
+    local robotParts = GetJointedBodies(robot)
+    OutlineBodies(robotParts, drawRequiredOutline)
 end
