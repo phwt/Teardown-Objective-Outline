@@ -1,9 +1,16 @@
-Objectives outline will always be visible regardless of the distance and also will be color coded!
+[b]Objectives outline will always be visible regardless of the distance and also will be color coded![/b]
 
 Not just the objectives that will get outlined but these as well:
-- Required Objectives (Yellow)
-- Optional Objectives (White)
-- Escape Vehicle (Green)
-- Robots (Red)
+[list]
+[*] Required Objectives (Yellow)
+[*] Optional Objectives (White)
+[*] Escape Vehicle (Green)
+[*] Robots (Red - [i]if the robots are also the objectives the yellow/white outline will takes precedence over this one[/i])
+[/list]
 
-Enabling outlines can make the game easier if you want it to be more challenging. Each type of outline can be turned off individually in the options.
+Enabling outlines can make the game easier if you want it to be more challenging - each type of outline can be turned off individually in the options.
+
+Known issues:
+[list]
+[*] When getting close to the objectives, the custom outline will get overridden by the default one (lower opacity white outline that fades out relative to the distance)
+[/list]
