@@ -47,15 +47,32 @@ function OutlineBodies(bodies, outlineFunction)
 end
 
 function DrawObjectiveOutline(objective)
-    if HasTag(objective, "optional") then
+    local function drawOptionalOutline(optionalObjective)
+        DrawBodyOutline(optionalObjective, 252 / 255, 250 / 255, 137 / 255, outlineOpacity)
+    end
+
+    local function drawRequiredOutline(requiredObjective)
+        DrawBodyOutline(requiredObjective, 252 / 255, 250 / 255, 137 / 255, outlineOpacity)
+    end
+
+    local isOptional = HasTag(objective, "optional")
+    local isRobot = HasTag(objective, "body")
+
+    if isOptional and enableOptionalOutline then
         -- Outline optional objectives
-        if enableOptionalOutline then
-            DrawBodyOutline(objective, 1, 1, 1, outlineOpacity)
+        if isRobot then
+            OutlineBodies(GetJointedBodies(objective), drawOptionalOutline)
+        else
+            drawOptionalOutline(objective)
         end
-    else
+    end
+
+    if not isOptional and enableRequiredOutline then
         -- Outline required objectives
-        if enableRequiredOutline then
-            DrawBodyOutline(objective, 252 / 255, 250 / 255, 137 / 255, outlineOpacity)
+        if isRobot then
+            OutlineBodies(GetJointedBodies(objective), drawRequiredOutline)
+        else
+            drawRequiredOutline(objective)
         end
     end
 end
